@@ -10,9 +10,13 @@
 app.controller("listCtrl", function($scope, todoFactory, userFactory){
     
     $scope.tasks =[];
-    
+    let user = userFactory.getCurrentUser();
+
+
     const showAllTasks = function(){
-        todoFactory.getAllTasks()
+        console.log('user', user);
+        
+        todoFactory.getAllTasks(user)
         .then((tasks)=>{
             console.log('showAllTasks from promise',tasks);
             $scope.tasks = tasks;        

@@ -10,7 +10,7 @@ app.controller("editTaskCtrl", function($scope, todoFactory, $routeParams, $loca
 
     $scope.title = "Edit Task";
     $scope.submitButtonText = "Edit Item";
-
+    
 
     $scope.task = {
         assignedTo: "",
