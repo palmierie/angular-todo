@@ -2,15 +2,50 @@
 
 const app = angular.module("TodoApp", ["ngRoute"]);
 
+let isAuth = (userFactory) => new Promise ( (resolve, reject) => {
+  console.log("userFactory is", userFactory);
+  userFactory.isAuthenticated()
+  .then( (userExists) => {
+    if(userExists){
+      console.log("Authenticated, go ahead");
+      resolve();
+    }else {
+      console.log("Authentication reject, GO AWAY");
+      reject();
+    }
+  });
+});
+
 app.config(($routeProvider)=>{
   $routeProvider
   .when('/',{
     templateUrl: 'partials/list.html',
-    controller: 'listCtrl'
+    controller: 'listCtrl',
+    resolve: {isAuth}
+  })
+  .when('/login',{
+    templateUrl: 'partials/user.html',
+    controller: 'userCtrl'
+  })
+  .when('/task-list',{
+    templateUrl: 'partials/list.html',
+    controller: 'listCtrl',
+    resolve: {isAuth}
+  })
+  .when('/item/newItem',{
+    templateUrl: 'partials/form.html',
+    controller: 'addTaskCtrl',
+    resolve: {isAuth}
   })
   .when('/task/:itemId',{ // ":" means anything after the ":" is dynamic
     templateUrl: 'partials/details.html',
-    controller: 'detailTaskCtrl'
+    controller: 'detailTaskCtrl',
+    resolve: {isAuth}
+  })
+  .when('/task/:itemId/edit',{
+    templateUrl: 'partials/form.html',
+    controller: 'editTaskCtrl',
+    resolve: {isAuth}
   })
   .otherwise('/');
 });

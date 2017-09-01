@@ -20,13 +20,22 @@ app.controller("listCtrl", function($scope, todoFactory, userFactory){
     };
 
     
-    const deleteTask = function(){
-
+    $scope.deleteTask = function(id){
+        todoFactory.deleteTask(id)
+        .then( ()=>{
+            showAllTasks();
+        });
     };
 
-    
-    const toggleDoneTask = function(){
-
+    // ng-model flips the isCompleted key value and updates DOM before receiving data from database.  Hence why obj.isCompleted is "obj.isCompleted ? true: false" instead of "obj.isCompleted ? false: true"
+    $scope.toggleDoneTask = function(obj){
+        let status = obj.isCompleted ? true: false;
+        let tmpObj = {isCompleted: status};
+        todoFactory.editTask(obj.id, tmpObj)
+        .then( ()=>{
+            console.log('then is updated');
+            showAllTasks();
+        });
     };
 
     showAllTasks();
